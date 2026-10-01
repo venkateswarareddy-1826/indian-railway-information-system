@@ -1,0 +1,3356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Where Is My Train?</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f4f6f8;
+            color: #172033;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        header {
+
+            height: 72px;
+
+            background: #111827;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            position: relative;
+
+            z-index: 20;
+        }
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .brand-icon {
+
+            width: 42px;
+            height: 42px;
+
+            background: #0aa84f;
+
+            border-radius: 10px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 21px;
+        }
+
+        .brand-text h2 {
+
+            font-size: 20px;
+
+            margin-bottom: 2px;
+        }
+
+        .brand-text p {
+
+            font-size: 12px;
+
+            color: #aeb8c7;
+        }
+
+        .network {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            color: #d4dbe5;
+
+            font-size: 13px;
+        }
+
+        .network-dot {
+
+            width: 8px;
+            height: 8px;
+
+            background: #22c55e;
+
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 8px rgba(34,197,94,.6);
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+
+            position: relative;
+
+            overflow: hidden;
+
+            min-height: 330px;
+
+            background: #111827;
+
+            color: white;
+
+            padding: 58px 20px 140px;
+
+            text-align: center;
+        }
+
+        .hero-content {
+
+            position: relative;
+
+            z-index: 3;
+        }
+
+        .hero-label {
+
+            display: inline-block;
+
+            padding: 7px 12px;
+
+            border: 1px solid rgba(255,255,255,.15);
+
+            border-radius: 20px;
+
+            color: #cbd5e1;
+
+            font-size: 11px;
+
+            letter-spacing: 1.2px;
+
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+
+            font-size: 46px;
+
+            line-height: 1.1;
+
+            font-weight: 700;
+
+            margin-bottom: 14px;
+
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+
+            color: #b9c2d0;
+
+            font-size: 17px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           TRAIN WATERMARK
+        ===================================================== */
+
+        .train-watermark {
+
+            position: absolute;
+
+            left: 50%;
+
+            bottom: -60px;
+
+            transform: translateX(-50%);
+
+            width: min(1200px,95vw);
+
+            height: auto;
+
+            opacity: .075;
+
+            pointer-events: none;
+
+            z-index: 1;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .main {
+
+            max-width: 1080px;
+
+            margin: -85px auto 0;
+
+            padding: 0 20px;
+
+            position: relative;
+
+            z-index: 5;
+        }
+
+
+        /* =====================================================
+           SEARCH CARD
+        ===================================================== */
+
+        .search-card {
+
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 30px;
+
+            border: 1px solid #edf0f3;
+
+            box-shadow:
+                0 15px 45px rgba(15,23,42,.12);
+        }
+
+        .search-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 24px;
+        }
+
+        .search-title-area {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .search-title-icon {
+
+            width: 42px;
+            height: 42px;
+
+            background: #ecf9f2;
+
+            color: #0aa84f;
+
+            border-radius: 10px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 20px;
+        }
+
+        .search-heading h2 {
+
+            font-size: 21px;
+
+            margin-bottom: 3px;
+        }
+
+        .search-heading p {
+
+            color: #7b8492;
+
+            font-size: 12px;
+        }
+
+        .search-heading span {
+
+            font-size: 12px;
+
+            color: #7b8492;
+
+            background: #f6f7f9;
+
+            padding: 8px 10px;
+
+            border-radius: 7px;
+        }
+
+
+        /* =====================================================
+           SEARCH
+        ===================================================== */
+
+        .label {
+
+            display: block;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            color: #657080;
+
+            margin-bottom: 8px;
+
+            text-transform: uppercase;
+
+            letter-spacing: .5px;
+        }
+
+        .search-row {
+
+            display: flex;
+
+            gap: 12px;
+        }
+
+        .search-input {
+
+            flex: 1;
+
+            height: 54px;
+
+            border: 1px solid #d9dee5;
+
+            border-radius: 9px;
+
+            padding: 0 16px;
+
+            font-size: 15px;
+
+            color: #172033;
+
+            outline: none;
+
+            transition: .2s;
+        }
+
+        .search-input:focus {
+
+            border-color: #0aa84f;
+
+            box-shadow:
+                0 0 0 3px rgba(10,168,79,.10);
+        }
+
+        .search-button {
+
+            height: 54px;
+
+            padding: 0 27px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #0aa84f;
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        .search-button:hover {
+
+            background: #078c42;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =====================================================
+           FROM TO
+        ===================================================== */
+
+        .route-row {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 55px 1fr;
+
+            gap: 12px;
+
+            align-items: center;
+
+            margin-top: 22px;
+        }
+
+        .station {
+
+            min-height: 76px;
+
+            border: 1px solid #e0e4e9;
+
+            background: #fafbfc;
+
+            border-radius: 10px;
+
+            padding: 14px 16px;
+        }
+
+        .station small {
+
+            display: block;
+
+            color: #7b8492;
+
+            font-size: 10px;
+
+            font-weight: bold;
+
+            letter-spacing: .7px;
+
+            margin-bottom: 7px;
+        }
+
+        .station strong {
+
+            font-size: 15px;
+
+            color: #172033;
+        }
+
+        .arrow {
+
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            background: #e9f9f0;
+
+            color: #0aa84f;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            margin: auto;
+
+            font-size: 19px;
+        }
+
+
+        /* =====================================================
+           RESULTS
+        ===================================================== */
+
+        #result {
+
+            margin-top: 22px;
+        }
+
+        .empty-result {
+
+            background: #f7f8fa;
+
+            color: #7a8492;
+
+            padding: 15px;
+
+            border-radius: 9px;
+
+            font-size: 13px;
+
+            border: 1px solid #edf0f3;
+        }
+
+        .train-result {
+
+            background: white;
+
+            border: 1px solid #e5e9ed;
+
+            border-left: 4px solid #0aa84f;
+
+            padding: 17px;
+
+            margin-top: 10px;
+
+            border-radius: 9px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+        }
+
+        .train-info {
+
+            flex: 1;
+        }
+
+        .train-name {
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            color: #172033;
+
+            margin-bottom: 7px;
+        }
+
+        .train-meta {
+
+            color: #687384;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+        .train-number {
+
+            display: inline-block;
+
+            background: #ecf9f2;
+
+            color: #078c42;
+
+            padding: 4px 8px;
+
+            border-radius: 5px;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            margin-right: 6px;
+        }
+
+        .route-text {
+
+            color: #566170;
+
+            font-size: 12px;
+
+            margin-top: 4px;
+        }
+
+        .button-group {
+
+            display: flex;
+
+            gap: 8px;
+
+            flex-wrap: wrap;
+        }
+
+        .route-button,
+        .live-button {
+
+            border-radius: 7px;
+
+            padding: 9px 12px;
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+
+            transition: .2s;
+        }
+
+        .route-button {
+
+            border: 1px solid #d8e5dc;
+
+            background: white;
+
+            color: #078c42;
+        }
+
+        .route-button:hover {
+
+            background: #ecf9f2;
+        }
+
+        .live-button {
+
+            border: none;
+
+            background: #0aa84f;
+
+            color: white;
+        }
+
+        .live-button:hover {
+
+            background: #078c42;
+        }
+
+
+        /* =====================================================
+           LIVE STATUS
+        ===================================================== */
+
+        .live-status-card {
+
+            margin-top: 18px;
+
+            background: #f8fbf9;
+
+            border: 1px solid #e0ebe4;
+
+            border-radius: 14px;
+
+            padding: 18px 20px;
+        }
+
+        .live-status-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 18px;
+        }
+
+        .live-title {
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            color: #172033;
+        }
+
+        .status-badge {
+
+            padding: 7px 11px;
+
+            border-radius: 20px;
+
+            background: #e8f8ef;
+
+            color: #078c42;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+        .status-badge::before {
+
+            content: "●";
+
+            margin-right: 5px;
+        }
+
+        .status-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4,1fr);
+
+            gap: 10px;
+        }
+
+        .status-box {
+
+            background: white;
+
+            border: 1px solid #e4e9e6;
+
+            border-radius: 10px;
+
+            padding: 14px;
+        }
+
+        .status-label {
+
+            font-size: 10px;
+
+            color: #7b8492;
+
+            text-transform: uppercase;
+
+            letter-spacing: .4px;
+
+            margin-bottom: 7px;
+        }
+
+        .status-value {
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            color: #172033;
+
+        }
+
+        .delay-value {
+
+            color: #d38318;
+        }
+
+        .last-updated {
+
+            margin-top: 14px;
+
+            color: #7b8492;
+
+            font-size: 11px;
+        }
+
+        .live-loading {
+
+            text-align: center;
+
+            padding: 15px;
+
+            color: #7b8492;
+
+            font-size: 13px;
+        }
+
+        .live-error {
+
+            background: #fff7f7;
+
+            border: 1px solid #f1dada;
+
+            color: #a94442;
+
+            padding: 13px;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+
+            margin-top: 15px;
+        }
+
+
+        /* =====================================================
+           OVERVIEW
+        ===================================================== */
+
+        .overview-section {
+
+            margin-top: 38px;
+        }
+
+        .section-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 16px;
+        }
+
+        .section-heading h2 {
+
+            font-size: 20px;
+        }
+
+        .section-heading p {
+
+            color: #8a94a3;
+
+            font-size: 12px;
+        }
+
+        .overview-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4,1fr);
+
+            gap: 14px;
+        }
+
+        .overview-card {
+
+            background: white;
+
+            border: 1px solid #e6e9ed;
+
+            border-radius: 12px;
+
+            padding: 19px;
+
+            min-height: 120px;
+
+            transition: .2s;
+        }
+
+        .overview-card:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 22px rgba(0,0,0,.06);
+        }
+
+        .overview-icon {
+
+            width: 34px;
+            height: 34px;
+
+            border-radius: 8px;
+
+            background: #ecf9f2;
+
+            color: #0aa84f;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 16px;
+
+            margin-bottom: 14px;
+        }
+
+        .overview-number {
+
+            font-size: 23px;
+
+            font-weight: bold;
+
+            color: #172033;
+
+            margin-bottom: 3px;
+        }
+
+        .overview-label {
+
+            font-size: 12px;
+
+            color: #7b8492;
+        }
+
+
+        /* =====================================================
+           POPULAR
+        ===================================================== */
+
+        .popular-section {
+
+            margin-top: 38px;
+        }
+
+        .popular-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            gap: 14px;
+        }
+
+        .popular-card {
+
+            background: white;
+
+            border: 1px solid #e6e9ed;
+
+            border-radius: 12px;
+
+            padding: 18px;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        .popular-card:hover {
+
+            transform: translateY(-3px);
+
+            border-color: #bfe2ce;
+
+            box-shadow:
+                0 9px 24px rgba(0,0,0,.07);
+        }
+
+        .popular-number {
+
+            color: #0aa84f;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            margin-bottom: 7px;
+        }
+
+        .popular-name {
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            margin-bottom: 7px;
+        }
+
+        .popular-route {
+
+            color: #7b8492;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+        .click-search {
+
+            display: block;
+
+            margin-top: 13px;
+
+            color: #078c42;
+
+            font-size: 11px;
+
+            font-weight: bold;
+        }
+
+
+        /* =====================================================
+           QUICK ACCESS
+        ===================================================== */
+
+        .quick-section {
+
+            margin-top: 38px;
+
+            padding-bottom: 60px;
+        }
+
+        .quick-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            gap: 15px;
+        }
+
+        .quick-card {
+
+            background: white;
+
+            border: 1px solid #e6e9ed;
+
+            border-radius: 12px;
+
+            padding: 21px;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        .quick-card:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 9px 24px rgba(0,0,0,.07);
+        }
+
+        .quick-icon {
+
+            width: 43px;
+            height: 43px;
+
+            background: #ecf9f2;
+
+            color: #0aa84f;
+
+            border-radius: 9px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 20px;
+
+            margin-bottom: 15px;
+        }
+
+        .quick-card h3 {
+
+            font-size: 16px;
+
+            margin-bottom: 6px;
+        }
+
+        .quick-card p {
+
+            color: #7b8492;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+
+            border-top: 1px solid #e1e5ea;
+
+            background: white;
+
+            text-align: center;
+
+            padding: 23px;
+
+            color: #8a94a3;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           MODAL
+        ===================================================== */
+
+        .modal-overlay {
+
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(15,23,42,.60);
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            z-index: 100;
+        }
+
+        .modal-overlay.show {
+
+            display: flex;
+        }
+
+        .route-modal {
+
+            width: min(650px,100%);
+
+            max-height: 85vh;
+
+            overflow-y: auto;
+
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 20px 60px rgba(0,0,0,.25);
+        }
+
+        .modal-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+
+            font-size: 20px;
+        }
+
+        .close-button {
+
+            width: 34px;
+            height: 34px;
+
+            border: none;
+
+            background: #f1f3f5;
+
+            border-radius: 50%;
+
+            cursor: pointer;
+
+            font-size: 18px;
+
+            color: #657080;
+        }
+
+        .route-list {
+
+            position: relative;
+
+            padding: 8px 0 8px 10px;
+        }
+
+        .route-stop {
+
+            position: relative;
+
+            min-height: 70px;
+
+            padding: 5px 15px 18px 42px;
+
+            border-left: 2px solid #dce5df;
+        }
+
+        .route-stop:last-child {
+
+            border-left-color: transparent;
+        }
+
+        .route-stop::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: -7px;
+
+            top: 7px;
+
+            width: 12px;
+            height: 12px;
+
+            background: white;
+
+            border: 3px solid #0aa84f;
+
+            border-radius: 50%;
+
+            z-index: 2;
+        }
+
+        .route-stop:first-child::before {
+
+            background: #0aa84f;
+        }
+
+        .route-stop:last-child::before {
+
+            background: #111827;
+
+            border-color: #111827;
+        }
+
+        .stop-number {
+
+            font-size: 10px;
+
+            color: #8a94a3;
+
+            font-weight: bold;
+
+            margin-bottom: 3px;
+        }
+
+        .stop-name {
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            color: #172033;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width:800px) {
+
+            header {
+
+                padding: 0 20px;
+            }
+
+            .overview-grid {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+
+            .popular-grid {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+
+            .status-grid {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+        }
+
+
+        @media (max-width:700px) {
+
+            .network {
+
+                display: none;
+            }
+
+            .hero {
+
+                min-height: 300px;
+
+                padding:
+                    45px 20px 120px;
+            }
+
+            .hero h1 {
+
+                font-size: 34px;
+            }
+
+            .hero p {
+
+                font-size: 14px;
+            }
+
+            .main {
+
+                padding: 0 15px;
+            }
+
+            .search-card {
+
+                padding: 20px;
+            }
+
+            .search-heading {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .search-heading span {
+
+                display: none;
+            }
+
+            .search-row {
+
+                flex-direction: column;
+            }
+
+            .search-button {
+
+                width: 100%;
+            }
+
+            .route-row {
+
+                grid-template-columns: 1fr;
+            }
+
+            .arrow {
+
+                transform: rotate(90deg);
+            }
+
+            .overview-grid {
+
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+            .popular-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .quick-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .train-result {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .button-group {
+
+                width: 100%;
+            }
+
+            .route-button,
+            .live-button {
+
+                flex: 1;
+            }
+
+            .status-grid {
+
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+
+        @media (max-width:420px) {
+
+            .brand-text h2 {
+
+                font-size: 17px;
+            }
+
+            .brand-text p {
+
+                font-size: 10px;
+            }
+
+            .brand-icon {
+
+                width: 38px;
+                height: 38px;
+
+                font-size: 19px;
+            }
+
+            .hero h1 {
+
+                font-size: 30px;
+            }
+
+            .overview-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .status-grid {
+
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            🚆
+        </div>
+
+        <div class="brand-text">
+
+            <h2>
+                Where Is My Train?
+            </h2>
+
+            <p>
+                Indian Railway Information System
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="network">
+
+        <span class="network-dot"></span>
+
+        Live Railway Network
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+
+    <svg
+        class="train-watermark"
+        viewBox="0 0 1200 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+    >
+
+        <rect
+            x="80"
+            y="105"
+            width="300"
+            height="115"
+            rx="10"
+            fill="none"
+            stroke="white"
+            stroke-width="4"
+        />
+
+        <path
+            d="M110 105 L145 70 L325 70 L355 105"
+            fill="none"
+            stroke="white"
+            stroke-width="4"
+        />
+
+        <rect
+            x="105"
+            y="125"
+            width="70"
+            height="45"
+            rx="5"
+            fill="none"
+            stroke="white"
+            stroke-width="3"
+        />
+
+        <rect
+            x="200"
+            y="125"
+            width="65"
+            height="45"
+            rx="5"
+            fill="none"
+            stroke="white"
+            stroke-width="3"
+        />
+
+        <rect
+            x="285"
+            y="125"
+            width="65"
+            height="45"
+            rx="5"
+            fill="none"
+            stroke="white"
+            stroke-width="3"
+        />
+
+        <rect
+            x="395"
+            y="115"
+            width="260"
+            height="105"
+            rx="8"
+            fill="none"
+            stroke="white"
+            stroke-width="4"
+        />
+
+        <rect
+            x="670"
+            y="115"
+            width="260"
+            height="105"
+            rx="8"
+            fill="none"
+            stroke="white"
+            stroke-width="4"
+        />
+
+        <circle
+            cx="145"
+            cy="235"
+            r="25"
+            fill="none"
+            stroke="white"
+            stroke-width="4"
+        />
+
+        <circle
+            cx="315"
+            cy="235"
+            r="25"
+            fill="none"
+            stroke="white"
+            stroke-width="4"
+        />
+
+        <circle
+            cx="455"
+            cy="235"
+            r="22"
+            fill="none"
+            stroke="white"
+            stroke-width="4"
+        />
+
+        <circle
+            cx="590"
+            cy="235"
+            r="22"
+            fill="none"
+            stroke="white"
+            stroke-width="4"
+        />
+
+        <circle
+            cx="730"
+            cy="235"
+            r="22"
+            fill="none"
+            stroke="white"
+            stroke-width="4"
+        />
+
+        <circle
+            cx="865"
+            cy="235"
+            r="22"
+            fill="none"
+            stroke="white"
+            stroke-width="4"
+        />
+
+        <line
+            x1="45"
+            y1="265"
+            x2="965"
+            y2="265"
+            stroke="white"
+            stroke-width="4"
+        />
+
+        <line
+            x1="45"
+            y1="285"
+            x2="965"
+            y2="285"
+            stroke="white"
+            stroke-width="4"
+        />
+
+    </svg>
+
+
+    <div class="hero-content">
+
+        <div class="hero-label">
+            INDIAN RAILWAY INFORMATION SYSTEM
+        </div>
+
+        <h1>
+            Find Your Train
+        </h1>
+
+        <p>
+            Search trains, track live running status and
+            explore railway routes in seconds.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main">
+
+
+    <!-- =================================================
+         SEARCH CARD
+    ================================================== -->
+
+    <div class="search-card">
+
+
+        <div class="search-heading">
+
+            <div class="search-title-area">
+
+                <div class="search-title-icon">
+                    🔎
+                </div>
+
+                <div>
+
+                    <h2>
+                        Search Train
+                    </h2>
+
+                    <p>
+                        Find a train by its number or name
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <span>
+                Live Railway Data
+            </span>
+
+        </div>
+
+
+        <label class="label">
+            Train Number / Train Name
+        </label>
+
+
+        <div class="search-row">
+
+            <input
+                type="text"
+                id="search"
+                class="search-input"
+                placeholder="Example: 12616 or Grand Trunk Express"
+            >
+
+
+            <button
+                class="search-button"
+                onclick="searchTrain()"
+            >
+                Search Train
+            </button>
+
+        </div>
+
+
+        <!-- FROM / TO -->
+
+        <div class="route-row">
+
+            <div class="station">
+
+                <small>
+                    FROM
+                </small>
+
+                <strong id="fromStation">
+                    Departure Station
+                </strong>
+
+            </div>
+
+
+            <div class="arrow">
+                →
+            </div>
+
+
+            <div class="station">
+
+                <small>
+                    TO
+                </small>
+
+                <strong id="toStation">
+                    Arrival Station
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- RESULTS -->
+
+        <div id="result">
+
+            <div class="empty-result">
+
+                Enter a train number or name above
+                to search.
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         OVERVIEW
+    ================================================== -->
+
+    <section class="overview-section">
+
+        <div class="section-heading">
+
+            <h2>
+                Railway Overview
+            </h2>
+
+            <p>
+                Project database
+            </p>
+
+        </div>
+
+
+        <div class="overview-grid">
+
+
+            <div class="overview-card">
+
+                <div class="overview-icon">
+                    🚆
+                </div>
+
+                <div class="overview-number">
+                    25+
+                </div>
+
+                <div class="overview-label">
+                    Trains available
+                </div>
+
+            </div>
+
+
+            <div class="overview-card">
+
+                <div class="overview-icon">
+                    📍
+                </div>
+
+                <div class="overview-number">
+                    425
+                </div>
+
+                <div class="overview-label">
+                    Route stops
+                </div>
+
+            </div>
+
+
+            <div class="overview-card">
+
+                <div class="overview-icon">
+                    🛤️
+                </div>
+
+                <div class="overview-number">
+                    25
+                </div>
+
+                <div class="overview-label">
+                    Train routes
+                </div>
+
+            </div>
+
+
+            <div class="overview-card">
+
+                <div class="overview-icon">
+                    ●
+                </div>
+
+                <div class="overview-number">
+                    Live
+                </div>
+
+                <div class="overview-label">
+                    Running status API
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         POPULAR TRAINS
+    ================================================== -->
+
+    <section class="popular-section">
+
+        <div class="section-heading">
+
+            <h2>
+                Popular Train Searches
+            </h2>
+
+            <p>
+                Click to search
+            </p>
+
+        </div>
+
+
+        <div class="popular-grid">
+
+
+            <div
+                class="popular-card"
+                onclick="quickSearch('12616')"
+            >
+
+                <div class="popular-number">
+                    TRAIN 12616
+                </div>
+
+                <div class="popular-name">
+                    GRAND TRUNK EXP
+                </div>
+
+                <div class="popular-route">
+                    New Delhi → Chennai Central
+                </div>
+
+                <span class="click-search">
+                    Search train →
+                </span>
+
+            </div>
+
+
+            <div
+                class="popular-card"
+                onclick="quickSearch('12724')"
+            >
+
+                <div class="popular-number">
+                    TRAIN 12724
+                </div>
+
+                <div class="popular-name">
+                    TELANGANA EXPRESS
+                </div>
+
+                <div class="popular-route">
+                    New Delhi → Hyderabad Deccan
+                </div>
+
+                <span class="click-search">
+                    Search train →
+                </span>
+
+            </div>
+
+
+            <div
+                class="popular-card"
+                onclick="quickSearch('17252')"
+            >
+
+                <div class="popular-number">
+                    TRAIN 17252
+                </div>
+
+                <div class="popular-name">
+                    KCG GNT EXP
+                </div>
+
+                <div class="popular-route">
+                    Kacheguda → Guntur Jn
+                </div>
+
+                <span class="click-search">
+                    Search train →
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         QUICK ACCESS
+    ================================================== -->
+
+    <section class="quick-section">
+
+        <div class="section-heading">
+
+            <h2>
+                Quick Access
+            </h2>
+
+            <p>
+                Railway tools
+            </p>
+
+        </div>
+
+
+        <div class="quick-grid">
+
+
+            <div class="quick-card">
+
+                <div class="quick-icon">
+                    🚆
+                </div>
+
+                <h3>
+                    Train Search
+                </h3>
+
+                <p>
+                    Find a train using its number or name.
+                </p>
+
+            </div>
+
+
+            <div class="quick-card">
+
+                <div class="quick-icon">
+                    📍
+                </div>
+
+                <h3>
+                    Station Search
+                </h3>
+
+                <p>
+                    Search railway stations and station codes.
+                </p>
+
+            </div>
+
+
+            <div class="quick-card">
+
+                <div class="quick-icon">
+                    📊
+                </div>
+
+                <h3>
+                    Running Status
+                </h3>
+
+                <p>
+                    Check live running information for
+                    a selected train.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<!-- =====================================================
+     ROUTE MODAL
+===================================================== -->
+
+<div
+    class="modal-overlay"
+    id="routeModal"
+    onclick="closeRouteModal(event)"
+>
+
+    <div class="route-modal">
+
+        <div class="modal-header">
+
+            <h2 id="routeTitle">
+                Train Route
+            </h2>
+
+            <button
+                class="close-button"
+                onclick="closeRouteModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            class="route-list"
+            id="routeList"
+        ></div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    Where Is My Train?
+
+    &nbsp; • &nbsp;
+
+    Indian Railway Information System
+
+</footer>
+
+
+
+<script>
+
+
+/* =====================================================
+   SEARCH TRAIN
+===================================================== */
+
+async function searchTrain() {
+
+    const input =
+        document.getElementById("search");
+
+    const result =
+        document.getElementById("result");
+
+    const fromStation =
+        document.getElementById("fromStation");
+
+    const toStation =
+        document.getElementById("toStation");
+
+
+    const search =
+        input.value.trim();
+
+
+    if (!search) {
+
+        result.innerHTML = `
+            <div class="empty-result">
+                Please enter a train number or train name.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    result.innerHTML = `
+        <div class="empty-result">
+            Searching for train...
+        </div>
+    `;
+
+
+    fromStation.textContent = "Loading...";
+    toStation.textContent = "Loading...";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/trains?search=" +
+                encodeURIComponent(search)
+            );
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "Train API response:",
+            data
+        );
+
+
+        if (!response.ok) {
+
+            result.innerHTML = `
+                <div class="empty-result">
+                    ${data.error ||
+                    "Something went wrong."}
+                </div>
+            `;
+
+            return;
+        }
+
+
+        if (
+            !Array.isArray(data) ||
+            data.length === 0
+        ) {
+
+            result.innerHTML = `
+                <div class="empty-result">
+                    No trains found for "${search}".
+                </div>
+            `;
+
+            fromStation.textContent =
+                "Departure Station";
+
+            toStation.textContent =
+                "Arrival Station";
+
+            return;
+        }
+
+
+        result.innerHTML = "";
+
+
+        data.forEach(function(train) {
+
+            const trainName =
+                train.train_name ||
+                "Unknown Train";
+
+
+            const trainNumber =
+                train.train_number ||
+                train.train_no ||
+                train.train_id ||
+                "N/A";
+
+
+            const source =
+                train.source_station ||
+                train.source ||
+                "Departure Station";
+
+
+            const destination =
+                train.destination_station ||
+                train.destination ||
+                "Arrival Station";
+
+
+            const item =
+                document.createElement("div");
+
+
+            item.className =
+                "train-result";
+
+
+            item.innerHTML = `
+
+                <div class="train-info">
+
+                    <div class="train-name">
+                        ${trainName}
+                    </div>
+
+                    <div class="train-meta">
+
+                        <span class="train-number">
+                            ${trainNumber}
+                        </span>
+
+                        Train Number
+
+                    </div>
+
+                    <div class="route-text">
+
+                        ${source}
+                        →
+                        ${destination}
+
+                    </div>
+
+                </div>
+
+
+                <div class="button-group">
+
+                    <button
+                        class="live-button"
+                        onclick="showLiveStatus('${trainNumber}')"
+                    >
+                        ● Live Status
+                    </button>
+
+                    <button
+                        class="route-button"
+                        onclick="showRoute('${trainNumber}', '${escapeHtml(trainName)}')"
+                    >
+                        View Route
+                    </button>
+
+                </div>
+
+            `;
+
+
+            result.appendChild(item);
+
+
+            /*
+             * Automatically show live status
+             * for the first train.
+             */
+
+            if (train === data[0]) {
+
+                loadLiveStatus(
+                    trainNumber,
+                    trainName
+                );
+
+            }
+
+        });
+
+
+        /*
+         * Get FROM and TO from the
+         * actual route table.
+         */
+
+        const firstTrain =
+            data[0];
+
+
+        const firstNumber =
+            firstTrain.train_number ||
+            firstTrain.train_no ||
+            firstTrain.train_id;
+
+
+        if (firstNumber) {
+
+            await loadRouteStations(
+                firstNumber
+            );
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Train search error:",
+            error
+        );
+
+
+        result.innerHTML = `
+            <div class="empty-result">
+
+                Unable to connect to the server.
+
+                <br><br>
+
+                Please make sure the Node.js
+                server is running.
+
+            </div>
+        `;
+
+    }
+
+}
+
+
+
+/* =====================================================
+   LOAD FROM / TO
+   FROM SUPABASE ROUTE
+===================================================== */
+
+async function loadRouteStations(trainNumber) {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/trains/" +
+                encodeURIComponent(trainNumber) +
+                "/route"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "Route for From/To:",
+            data
+        );
+
+
+        if (!response.ok) {
+            return;
+        }
+
+
+        if (
+            !Array.isArray(data) ||
+            data.length === 0
+        ) {
+            return;
+        }
+
+
+        const firstStop =
+            data[0];
+
+
+        const lastStop =
+            data[data.length - 1];
+
+
+        const from =
+            firstStop.station_name ||
+            firstStop.stationName ||
+            firstStop.station_code ||
+            firstStop.stationCode ||
+            "Departure Station";
+
+
+        const to =
+            lastStop.station_name ||
+            lastStop.stationName ||
+            lastStop.station_code ||
+            lastStop.stationCode ||
+            "Arrival Station";
+
+
+        document
+            .getElementById("fromStation")
+            .textContent = from;
+
+
+        document
+            .getElementById("toStation")
+            .textContent = to;
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "From/To error:",
+            error
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   LIVE STATUS
+===================================================== */
+
+async function loadLiveStatus(
+    trainNumber,
+    trainName
+) {
+
+    let existing =
+        document.getElementById(
+            "liveStatusCard"
+        );
+
+
+    if (!existing) {
+
+        existing =
+            document.createElement("div");
+
+        existing.id =
+            "liveStatusCard";
+
+        existing.className =
+            "live-status-card";
+
+
+        document
+            .getElementById("result")
+            .appendChild(existing);
+
+    }
+
+
+    existing.innerHTML = `
+
+        <div class="live-loading">
+
+            Loading live running status
+            for train ${trainNumber}...
+
+        </div>
+
+    `;
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/trains/" +
+                encodeURIComponent(trainNumber) +
+                "/live"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "LIVE TRAIN DATA:",
+            data
+        );
+
+
+        if (!response.ok) {
+
+            existing.innerHTML = `
+
+                <div class="live-error">
+
+                    Unable to load live running status.
+
+                    <br><br>
+
+                    ${data.error ||
+                    data.message ||
+                    "Live status unavailable."}
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        /*
+         * RailRadar returns the actual
+         * train information inside data.
+         */
+
+        const trainData =
+            data.data || data;
+
+
+        renderLiveStatus(
+            existing,
+            trainData,
+            trainNumber,
+            trainName
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Live status error:",
+            error
+        );
+
+
+        existing.innerHTML = `
+
+            <div class="live-error">
+
+                Unable to connect to live
+                running status service.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+
+/* =====================================================
+   RENDER LIVE STATUS
+===================================================== */
+
+function renderLiveStatus(
+    container,
+    data,
+    trainNumber,
+    trainName
+) {
+
+
+    const status =
+        String(
+            data.status ||
+            "unknown"
+        ).toLowerCase();
+
+
+    let statusText =
+        "UNKNOWN";
+
+
+    if (status === "running") {
+
+        statusText =
+            "RUNNING";
+
+    }
+
+    else if (
+        status === "arrived"
+    ) {
+
+        statusText =
+            "ARRIVED";
+
+    }
+
+    else if (
+        status === "scheduled"
+    ) {
+
+        statusText =
+            "SCHEDULED";
+
+    }
+
+    else if (
+        status === "cancelled"
+    ) {
+
+        statusText =
+            "CANCELLED";
+
+    }
+
+    else if (
+        status === "terminated"
+    ) {
+
+        statusText =
+            "COMPLETED";
+
+    }
+
+    else {
+
+        statusText =
+            status.toUpperCase();
+
+    }
+
+
+    /*
+     * Current location
+     */
+
+    let currentLocation =
+        "Location unavailable";
+
+
+    if (
+        data.currentLocation
+    ) {
+
+        if (
+            typeof data.currentLocation ===
+            "string"
+        ) {
+
+            currentLocation =
+                data.currentLocation;
+
+        }
+
+        else {
+
+            currentLocation =
+                data.currentLocation.stationName ||
+                data.currentLocation.station_name ||
+                data.currentLocation.stationCode ||
+                data.currentLocation.station_code ||
+                "Location unavailable";
+
+        }
+
+    }
+
+
+    /*
+     * Previous station
+     */
+
+    let previousStation =
+        "Not available";
+
+
+    if (
+        data.previousHalt
+    ) {
+
+        if (
+            typeof data.previousHalt ===
+            "string"
+        ) {
+
+            previousStation =
+                data.previousHalt;
+
+        }
+
+        else {
+
+            previousStation =
+                data.previousHalt.stationName ||
+                data.previousHalt.station_name ||
+                data.previousHalt.stationCode ||
+                data.previousHalt.station_code ||
+                "Not available";
+
+        }
+
+    }
+
+
+    /*
+     * Next station
+     */
+
+    let nextStation =
+        "Not available";
+
+
+    if (
+        data.nextHalt
+    ) {
+
+        if (
+            typeof data.nextHalt ===
+            "string"
+        ) {
+
+            nextStation =
+                data.nextHalt;
+
+        }
+
+        else {
+
+            nextStation =
+                data.nextHalt.stationName ||
+                data.nextHalt.station_name ||
+                data.nextHalt.stationCode ||
+                data.nextHalt.station_code ||
+                "Not available";
+
+        }
+
+    }
+
+
+    /*
+     * Delay
+     */
+
+    const delayMinutes =
+        Number(
+            data.delayMinutes ??
+            data.delay ??
+            0
+        );
+
+
+    let delayText =
+        "On time";
+
+
+    if (!isNaN(delayMinutes)) {
+
+        if (delayMinutes > 0) {
+
+            delayText =
+                delayMinutes +
+                " minutes late";
+
+        }
+
+        else if (delayMinutes < 0) {
+
+            delayText =
+                Math.abs(delayMinutes) +
+                " minutes early";
+
+        }
+
+        else {
+
+            delayText =
+                "On time";
+
+        }
+
+    }
+
+
+    /*
+     * Last updated
+     */
+
+    const updated =
+        data.lastUpdatedAt ||
+        data.updatedAt ||
+        data.lastUpdated ||
+        null;
+
+
+    let updatedText =
+        "Not available";
+
+
+    if (updated) {
+
+        try {
+
+            updatedText =
+                new Date(updated)
+                    .toLocaleString(
+                        "en-IN",
+                        {
+                            dateStyle:
+                                "medium",
+                            timeStyle:
+                                "short"
+                        }
+                    );
+
+        }
+
+        catch {
+
+            updatedText =
+                updated;
+
+        }
+
+    }
+
+
+    container.innerHTML = `
+
+        <div class="live-status-header">
+
+            <div class="live-title">
+
+                ${trainNumber}
+                —
+                ${trainName}
+
+            </div>
+
+
+            <div class="status-badge">
+
+                ${statusText}
+
+            </div>
+
+        </div>
+
+
+        <div class="status-grid">
+
+
+            <div class="status-box">
+
+                <div class="status-label">
+                    Current Location
+                </div>
+
+                <div class="status-value">
+
+                    ${currentLocation}
+
+                </div>
+
+            </div>
+
+
+            <div class="status-box">
+
+                <div class="status-label">
+                    Delay
+                </div>
+
+                <div class="status-value delay-value">
+
+                    ${delayText}
+
+                </div>
+
+            </div>
+
+
+            <div class="status-box">
+
+                <div class="status-label">
+                    Previous Station
+                </div>
+
+                <div class="status-value">
+
+                    ${previousStation}
+
+                </div>
+
+            </div>
+
+
+            <div class="status-box">
+
+                <div class="status-label">
+                    Next Station
+                </div>
+
+                <div class="status-value">
+
+                    ${nextStation}
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="last-updated">
+
+            Last updated:
+            ${updatedText}
+
+        </div>
+
+    `;
+
+}
+
+
+
+/* =====================================================
+   SHOW LIVE STATUS BUTTON
+===================================================== */
+
+function showLiveStatus(
+    trainNumber
+) {
+
+    const trainCards =
+        document.querySelectorAll(
+            ".train-result"
+        );
+
+
+    trainCards.forEach(
+        function(card) {
+
+            const button =
+                card.querySelector(
+                    ".live-button"
+                );
+
+
+            if (!button) {
+                return;
+            }
+
+
+            const numberElement =
+                card.querySelector(
+                    ".train-number"
+                );
+
+
+            if (
+                numberElement &&
+                numberElement.textContent
+                    .trim() ===
+                String(trainNumber)
+            ) {
+
+                const existing =
+                    card.parentElement
+                        .querySelector(
+                            "#liveStatusCard"
+                        );
+
+
+                if (existing) {
+
+                    existing.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+
+                    return;
+
+                }
+
+            }
+
+        }
+    );
+
+
+    /*
+     * If the automatic card exists,
+     * refresh it.
+     */
+
+    loadLiveStatus(
+        trainNumber,
+        "Train"
+    );
+
+}
+
+
+
+/* =====================================================
+   QUICK SEARCH
+===================================================== */
+
+function quickSearch(
+    trainNumber
+) {
+
+    document
+        .getElementById("search")
+        .value =
+            trainNumber;
+
+
+    searchTrain();
+
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+}
+
+
+
+/* =====================================================
+   SHOW ROUTE
+===================================================== */
+
+async function showRoute(
+    trainNumber,
+    trainName
+) {
+
+    const modal =
+        document.getElementById(
+            "routeModal"
+        );
+
+
+    const routeList =
+        document.getElementById(
+            "routeList"
+        );
+
+
+    const routeTitle =
+        document.getElementById(
+            "routeTitle"
+        );
+
+
+    routeTitle.textContent =
+        trainNumber +
+        " — " +
+        trainName;
+
+
+    routeList.innerHTML = `
+
+        <div class="empty-result">
+
+            Loading train route...
+
+        </div>
+
+    `;
+
+
+    modal.classList.add("show");
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/trains/" +
+                encodeURIComponent(
+                    trainNumber
+                ) +
+                "/route"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "Route API response:",
+            data
+        );
+
+
+        if (!response.ok) {
+
+            routeList.innerHTML = `
+
+                <div class="empty-result">
+
+                    ${data.error ||
+                    data.message ||
+                    "Route could not be loaded."}
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        if (
+            !Array.isArray(data) ||
+            data.length === 0
+        ) {
+
+            routeList.innerHTML = `
+
+                <div class="empty-result">
+
+                    No route stops available
+                    for this train.
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        routeList.innerHTML = "";
+
+
+        data.forEach(
+            function(stop,index) {
+
+                const station =
+                    stop.station_name ||
+                    stop.stationName ||
+                    stop.station_code ||
+                    "Unknown Station";
+
+
+                const order =
+                    stop.stop_order ||
+                    index + 1;
+
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "route-stop";
+
+
+                item.innerHTML = `
+
+                    <div class="stop-number">
+
+                        STOP ${order}
+
+                    </div>
+
+                    <div class="stop-name">
+
+                        ${station}
+
+                    </div>
+
+                `;
+
+
+                routeList.appendChild(
+                    item
+                );
+
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Route error:",
+            error
+        );
+
+
+        routeList.innerHTML = `
+
+            <div class="empty-result">
+
+                Unable to load train route.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+
+/* =====================================================
+   CLOSE ROUTE MODAL
+===================================================== */
+
+function closeRouteModal(
+    event
+) {
+
+    if (
+        event &&
+        event.target !==
+        event.currentTarget
+    ) {
+
+        return;
+    }
+
+
+    document
+        .getElementById(
+            "routeModal"
+        )
+        .classList.remove(
+            "show"
+        );
+
+}
+
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(
+    text
+) {
+
+    return String(text)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+
+/* =====================================================
+   ENTER KEY
+===================================================== */
+
+document
+    .getElementById("search")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                searchTrain();
+
+            }
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+
+</html>
